@@ -120,12 +120,17 @@ class Model{
     /**
      * ToDo:: // do something
      */
-    public function userRole($employeeId, $departmentId){
+    public function employeeRole($employeeId, $departmentId){
         $where = "WHERE e_id = $employeeId AND d_id = $departmentId";
         $sql= "SELECT * FROM emp_dpt_roles {$where}"; 
         $result = $this->query($sql);
         $data = $this->fetch($result);
-        return $data;
+        if (isset($data)) {
+            $user_role_id = $data['r_id'];
+        } else {
+            $user_role_id = 0;
+        }
+        return $user_role_id;
     }
     
     /**
@@ -143,22 +148,12 @@ class Model{
      * ToDo:: // do something
      */
 
-    public function employeesUnderMe($employeeId, $departmentId){
-        $user_role = $this->userRole($employeeId, $departmentId);
-        if (isset($user_role)) {
-            $user_role_id = $user_role['r_id'];
-
-            $joins = "INNER JOIN employees AS emp ON emp.id = test.e_id INNER JOIN departments AS dpt ON dpt.id = test.d_id INNER JOIN roles ON roles.id = test.r_id";
-            $where = "WHERE d_id = $departmentId AND r_id > $user_role_id";
-            $sql= "SELECT emp.name, dpt.name, roles.name FROM emp_dpt_roles ".$joins.' '.$where; 
-            $result = $this->query($sql);
-            $data = $this->fetch($result);
-            return $data;
-            
-        } else {
-            return null;
-        }
+    public function employeesUnderMe($departmentId, $roleId){
+        
+        $sql= "SELECT emp.name as 'employee name', dpt.name as 'department name', roles.name as role FROM emp_dpt_roles INNER JOIN employees AS emp ON emp.id = emp_dpt_roles.e_id INNER JOIN departments AS dpt ON dpt.id = emp_dpt_roles.d_id INNER JOIN roles ON roles.id = emp_dpt_roles.r_id WHERE d_id = $departmentId AND r_id > $roleId";
+        $result = $this->query($sql);
+        $data = $this->fetchAll($result);
+        return $data;
     }
+
 }
-
-

@@ -49,6 +49,16 @@ use Organogram\model;
         return Model::get()->employeeAuthCheck($email, $password);
 
     }
+
+    /**
+     * Get the employee array 
+     * @param type $id
+     * @return type
+     */
+    function getEmployeeRole($emp_id, $dpt_id){
+        return Model::get()->employeeRole($emp_id, $dpt_id);
+
+    }
     
     /**
      * TODO:: Complete this method and get all the id's under an employee
@@ -60,9 +70,9 @@ use Organogram\model;
      * @param Integer $departmentId
      * @return Array List of employees 
      */
-    function getEmployeeUnderMe($employeeId, $departmentId){
+    function getEmployeeUnderMe($departmentId, $roleId){
         // echo $employeeId . "  ---  ". $departmentId;
-        return Model::get()->employeesUnderMe($employeeId, $departmentId); 
+        return Model::get()->employeesUnderMe($departmentId, $roleId); 
     }
 
    

@@ -30,24 +30,45 @@ if (isset($_POST['btnSubmit']))
 
 			$emp_id = $data['id'];
 			$dpt_id = $_POST["department"];
+			$role_id = $emp->getEmployeeRole($emp_id, $dpt_id);
+			
+			if ($role_id != 0) {
 
-			// echo $emp_id . "  ---  ". $dpt_id;
+				$employeeUnderMe = $emp->getEmployeeUnderMe($dpt_id, $role_id);
 
-			$data = $emp->getEmployeeUnderMe($emp_id, $dpt_id);
-			if (isset($data)) {
-				return $data;
+				if (!empty($employeeUnderMe)) {
+
+					echo "*** List of the employees, who work under you"; 
+					echo "<pre>"; 
+					print_r($employeeUnderMe);
+					echo "</pre>";
+
+				} else {
+
+					echo "No employees work under you yet.";
+
+				}
+
 			} else {
-				echo "Sorry! Incorrect Email/Password Or Department.";
+
+				echo "Sorry! you have no records in this department.";
+
 			}
 		
 		} else {
+
 			echo "Sorry! Incorrect Email or Password.";
+
 		}
 
 	} else {
+
 		header('Location: ' . $_SERVER['HTTP_REFERER']);
+
 	}
 
 } else {
+
 	header('Location: ' . $_SERVER['HTTP_REFERER']);
+
 }
