@@ -113,10 +113,8 @@ class Model{
      * ToDo:: // do something
      */
     public function roles(){
-        $sql= "SELECT * FROM roles"; 
-        $result = $this->query($sql);
-        $data = $this->fetchAll($result);
-        return $data;
+        // do something
+
     }
 
     /**
@@ -146,24 +144,20 @@ class Model{
      */
 
     public function employeesUnderMe($employeeId, $departmentId){
-        
         $user_role = $this->userRole($employeeId, $departmentId);
-        
-        // if (isset($user_role)) {
-
+        if (isset($user_role)) {
             $user_role_id = $user_role['r_id'];
 
-            $sql= "SELECT * FROM departments"; 
+            $joins = "INNER JOIN employees AS emp ON emp.id = test.e_id INNER JOIN departments AS dpt ON dpt.id = test.d_id INNER JOIN roles ON roles.id = test.r_id";
+            $where = "WHERE d_id = $departmentId AND r_id > $user_role_id";
+            $sql= "SELECT emp.name, dpt.name, roles.name FROM emp_dpt_roles ".$joins.' '.$where; 
             $result = $this->query($sql);
-            $data = $this->fetchAll($result);
-            die($data);
+            $data = $this->fetch($result);
+            return $data;
             
-        // } else {
-
-            // return null;
-
-        // }
-
+        } else {
+            return null;
+        }
     }
 }
 
