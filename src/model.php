@@ -122,15 +122,19 @@ class Model{
      */
     public function employeeRole($employeeId, $departmentId){
         $where = "WHERE e_id = $employeeId AND d_id = $departmentId";
-        $sql= "SELECT * FROM emp_dpt_roles {$where}"; 
+        $sql= "SELECT * FROM roles  
+                INNER JOIN emp_dpt_roles ON roles.id = emp_dpt_roles.r_id  
+                {$where}"; 
         $result = $this->query($sql);
         $data = $this->fetch($result);
+
+        $user_role_level = 0;
+
         if (isset($data)) {
-            $user_role_id = $data['r_id'];
-        } else {
-            $user_role_id = 0;
-        }
-        return $user_role_id;
+            $user_role_level = $data['hierarchy_level'];
+        } 
+        
+        return $user_role_level;
     }
     
     /**
@@ -148,10 +152,16 @@ class Model{
      * ToDo:: // do something
      */
 
-    public function employeesUnderMe($departmentId, $roleId){
+    public function employeesUnderMe($department_id, $hierarchy_level){
         
-        $sql= "SELECT emp.name as 'employee name', dpt.name as 'department name', roles.name as role FROM emp_dpt_roles INNER JOIN employees AS emp ON emp.id = emp_dpt_roles.e_id INNER JOIN departments AS dpt ON dpt.id = emp_dpt_roles.d_id INNER JOIN roles ON roles.id = emp_dpt_roles.r_id WHERE d_id = $departmentId AND r_id > $roleId";
+        $sql= "SELECT employees.name as 'employee_name', dpt.name as 'department_name',
+         roles.name as role_name FROM employees 
+         INNER JOIN emp_dpt_roles ON employees.id = emp_dpt_roles.e_id 
+         INNER JOIN departments AS dpt ON dpt.id = emp_dpt_roles.d_id 
+         INNER JOIN roles ON roles.id = emp_dpt_roles.r_id 
+         WHERE emp_dpt_roles.d_id = $department_id AND roles.hierarchy_level > $hierarchy_level";
         $result = $this->query($sql);
+        
         $data = $this->fetchAll($result);
         return $data;
     }

@@ -55,7 +55,7 @@ use Organogram\model;
      * @param type $id
      * @return type
      */
-    function getEmployeeRole($emp_id, $dpt_id){
+    function getEmployeeHierarchyLevel($emp_id, $dpt_id){
         return Model::get()->employeeRole($emp_id, $dpt_id);
 
     }
@@ -70,9 +70,8 @@ use Organogram\model;
      * @param Integer $departmentId
      * @return Array List of employees 
      */
-    function getEmployeeUnderMe($departmentId, $roleId){
-        // echo $employeeId . "  ---  ". $departmentId;
-        return Model::get()->employeesUnderMe($departmentId, $roleId); 
+    function getEmployeeUnderMe($department_id, $hierarchy_level){
+        return Model::get()->employeesUnderMe($department_id, $hierarchy_level); 
     }
 
    

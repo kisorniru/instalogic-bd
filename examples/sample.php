@@ -6,7 +6,7 @@ use Organogram\employee;
 
 // Example to show some employee
 $emp = new Employee();
-$data = $emp->getEmployee();        
+// $data = $emp->getEmployee();        
 // echo "<pre>"; 
 // print_r($data); 
 // echo "</pre>"; 
@@ -16,59 +16,49 @@ $data = $emp->getEmployee();
 // echo "<pre>"; 
 // print_r($data); 
 // echo "</pre>"; 
+try {
 
-if (isset($_POST['btnSubmit']))
-{
+	if (!isset($_POST['btnSubmit'])) {
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	}
+
 	$email 		= $_POST["email"];
 	$password 	= $_POST["password"];
 
-	if (($email != '') && ($password != '')) {
-
-		$data = $emp->employeeAuthCheck($email, $password);
-
-		if (isset($data)) {
-
-			$emp_id = $data['id'];
-			$dpt_id = $_POST["department"];
-			$role_id = $emp->getEmployeeRole($emp_id, $dpt_id);
-			
-			if ($role_id != 0) {
-
-				$employeeUnderMe = $emp->getEmployeeUnderMe($dpt_id, $role_id);
-
-				if (!empty($employeeUnderMe)) {
-
-					echo "*** List of the employees, who work under you"; 
-					echo "<pre>"; 
-					print_r($employeeUnderMe);
-					echo "</pre>";
-
-				} else {
-
-					echo "No employees work under you yet.";
-
-				}
-
-			} else {
-
-				echo "Sorry! you have no records in this department.";
-
-			}
-		
-		} else {
-
-			echo "Sorry! Incorrect Email or Password.";
-
-		}
-
-	} else {
-
+	if (empty($email) || empty($password)) {
 		header('Location: ' . $_SERVER['HTTP_REFERER']);
-
 	}
 
-} else {
+	$data = $emp->employeeAuthCheck($email, $password);
 
+	if (!isset($data)) {
+		//echo "Sorry! Incorrect Email or Password.";
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	}
+
+	$emp_id = $data['id'];
+	$dpt_id = $_POST["department"];
+	$hierarchy_level = $emp->getEmployeeHierarchyLevel($emp_id, $dpt_id);
+
+	if ((int)$hierarchy_level == 0) {
+
+		//echo "Sorry! you have no records in this department.";
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	}
+
+	$employeeUnderMe = $emp->getEmployeeUnderMe($dpt_id, $hierarchy_level);
+
+	if (empty($employeeUnderMe)) {
+		// echo "No employees work under you yet.";
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	}
+
+	echo "*** List of the employees, who work under you"; 
+	echo "<pre>"; 
+	print_r($employeeUnderMe);
+	echo "</pre>";
+	
+} catch (Exception $ex) {
+	$msg = "Error: " . $ex->getMessage();
 	header('Location: ' . $_SERVER['HTTP_REFERER']);
-
 }
