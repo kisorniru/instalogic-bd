@@ -5,7 +5,7 @@ $dotenv->load();
 
 
 function debug($data, $dump=false){
-    echo "<pre>"; 
+    echo "<pre>";
     if($dump){
         var_dump($data);
     }else{

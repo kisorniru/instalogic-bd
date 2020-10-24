@@ -1,64 +1,73 @@
 <?php
-//Loading Autoload file 
-require '../vendor/autoload.php'; 
 
-use Organogram\employee;
+	//Loading Autoload file 
+	require '../vendor/autoload.php'; 
 
-// Example to show some employee
-$emp = new Employee();
-// $data = $emp->getEmployee();        
-// echo "<pre>"; 
-// print_r($data); 
-// echo "</pre>"; 
+	use Organogram\employee;
+	// Example to show some employee
+	$emp = new Employee();
+	// $data = $emp->getEmployee();        
+	// echo "<pre>"; 
+	// print_r($data); 
+	// echo "</pre>";
 
-// ToDo:: call your getEmployeeUnerMe(EMP_ID, DPT_ID) and print all the ids here 
-// $data = $emp->getEmployeeUnerMe(5,1); 
-// echo "<pre>"; 
-// print_r($data); 
-// echo "</pre>"; 
-try {
+	// Use try catch to avoid exception 
+	try {
 
-	if (!isset($_POST['btnSubmit'])) {
-		header('Location: ' . $_SERVER['HTTP_REFERER']);
+		// Check button is triggered or not
+		if (!isset($_POST['btnSubmit'])) {
+			header('Location: login.php');
+		}
+
+		$email 		= $_POST["email"];
+		$password 	= $_POST["password"];
+
+		// Check email or password field is empty or not
+		if (empty($email) || empty($password)) {
+			Header('Location: login.php');
+		}
+
+		$data = $emp->employeeAuthCheck($email, $password);
+
+		// Check auth is made or not
+		if (!isset($data)) {
+			Header( 'Location: login.php?authError=1' );
+		}
+
+		$emp_id = $data['id'];
+		$dpt_id = $_POST["department"];
+		
+		// To know employee role or hierarchy level in department
+		$empDetails = $emp->getEmployeeHierarchyLevel($emp_id, $dpt_id);
+		$emp_hierarchy_level = 0;
+
+        if (isset($empDetails)) {
+            $emp_hierarchy_level = $empDetails['hierarchy_level'];
+        }
+
+		// To check employee is under inputed department or not
+		if ((int)$emp_hierarchy_level == 0) {
+			header('Location: login.php?dptError=1');
+		}
+
+		// To know who works under this logged in user
+		$employeesUnderMe = $emp->getEmployeeUnderMe($dpt_id, $emp_hierarchy_level);
+
+		if (empty($employeesUnderMe)) {
+			$employeesUnderMe = ['No employee work under this logged in employee.'];
+		}
+
+		echo "*** Logged in employee information: "; 
+		echo "<pre>";
+		print_r($empDetails);
+		echo "</pre>";
+
+		echo "*** list of the employees, who work under logged in employee: "; 
+		echo "<pre>"; 
+		print_r($employeesUnderMe);
+		echo "</pre>";
+		
+	} catch (Exception $ex) {
+		$msg = "Error: " . $ex->getMessage();
+		header('Location: login.php?exception=$msg');
 	}
-
-	$email 		= $_POST["email"];
-	$password 	= $_POST["password"];
-
-	if (empty($email) || empty($password)) {
-		header('Location: ' . $_SERVER['HTTP_REFERER']);
-	}
-
-	$data = $emp->employeeAuthCheck($email, $password);
-
-	if (!isset($data)) {
-		//echo "Sorry! Incorrect Email or Password.";
-		header('Location: ' . $_SERVER['HTTP_REFERER']);
-	}
-
-	$emp_id = $data['id'];
-	$dpt_id = $_POST["department"];
-	$hierarchy_level = $emp->getEmployeeHierarchyLevel($emp_id, $dpt_id);
-
-	if ((int)$hierarchy_level == 0) {
-
-		//echo "Sorry! you have no records in this department.";
-		header('Location: ' . $_SERVER['HTTP_REFERER']);
-	}
-
-	$employeeUnderMe = $emp->getEmployeeUnderMe($dpt_id, $hierarchy_level);
-
-	if (empty($employeeUnderMe)) {
-		// echo "No employees work under you yet.";
-		header('Location: ' . $_SERVER['HTTP_REFERER']);
-	}
-
-	echo "*** List of the employees, who work under you"; 
-	echo "<pre>"; 
-	print_r($employeeUnderMe);
-	echo "</pre>";
-	
-} catch (Exception $ex) {
-	$msg = "Error: " . $ex->getMessage();
-	header('Location: ' . $_SERVER['HTTP_REFERER']);
-}
