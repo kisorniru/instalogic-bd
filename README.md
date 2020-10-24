@@ -9,3 +9,9 @@
 6. Development work - /src/, update all files and it structure based on your requirements, you can add multiple files or folder whatever need can be used! 
 7. You can find model.php which is for database, it pre configured you can update or add more method, if it required. You can find employee.php which is define all your business logic and you can find some method is ready to use where you have to do your task. You may change it if it required. 
 8. /docs/ if any document require that you need to put you can put here. 
+
+## To run the project  
+1. Database Setup: Create a MySQL database and export this script /sql/organogram.sql - this gives you the database structure with some dummy data. 
+2. Database Configuration: Please change /src/.env file variable value with your database information.
+3. Open the browser and browse organogram/examples/login.php file.
+4. Input email address, password and department to get the list of your employees who work under you.

@@ -36,7 +36,7 @@ CREATE TABLE `departments` (
 
 LOCK TABLES `departments` WRITE;
 /*!40000 ALTER TABLE `departments` DISABLE KEYS */;
-INSERT INTO `departments` VALUES (1,'Software Development','2020-06-22 10:07:06'),(2,'Accounts','2020-06-22 10:07:06'),(3,'Marketing','2020-06-22 10:07:06'),(4,'Business development','2020-06-22 10:07:06');
+INSERT INTO `departments` VALUES (1,'Development -- A','2020-06-22 10:07:06'),(2,'Development -- B','2020-06-22 10:07:06'),(3,'Development -- C','2020-06-22 10:07:06'),(4,'Development -- D','2020-06-22 10:07:06');
 /*!40000 ALTER TABLE `departments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -48,16 +48,16 @@ DROP TABLE IF EXISTS `emp_dpt_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `emp_dpt_roles` (
-  `e_id` int(11) NOT NULL,
-  `d_id` int(11) NOT NULL,
-  `r_id` int(11) NOT NULL,
+  `emp_id` int(11) NOT NULL,
+  `dpt_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`e_id`,`d_id`,`r_id`),
-  KEY `d_id` (`d_id`),
-  KEY `r_id` (`r_id`),
-  CONSTRAINT `emp_dpt_roles_ibfk_1` FOREIGN KEY (`e_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `emp_dpt_roles_ibfk_2` FOREIGN KEY (`d_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `emp_dpt_roles_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`emp_id`,`dpt_id`,`role_id`),
+  KEY `d_id` (`dpt_id`),
+  KEY `r_id` (`role_id`),
+  CONSTRAINT `emp_dpt_roles_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `emp_dpt_roles_ibfk_2` FOREIGN KEY (`dpt_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `emp_dpt_roles_ibfk_3` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -67,7 +67,7 @@ CREATE TABLE `emp_dpt_roles` (
 
 LOCK TABLES `emp_dpt_roles` WRITE;
 /*!40000 ALTER TABLE `emp_dpt_roles` DISABLE KEYS */;
-INSERT INTO `emp_dpt_roles` VALUES (1,1,4,'2020-10-21 21:07:09'),(1,4,6,'2020-10-21 21:07:09'),(2,1,7,'2020-10-21 21:07:09'),(3,1,7,'2020-10-21 21:07:09'),(3,2,1,'2020-10-21 21:07:09'),(4,3,1,'2020-10-21 21:07:09'),(4,4,1,'2020-10-21 21:07:09');
+INSERT INTO `emp_dpt_roles` VALUES (1,1,1,'2020-10-24 13:43:06'),(1,2,6,'2020-10-24 13:56:12'),(1,3,6,'2020-10-24 14:07:46'),(2,1,2,'2020-10-24 13:43:42'),(2,2,6,'2020-10-24 14:04:36'),(2,3,6,'2020-10-24 14:07:46'),(3,1,2,'2020-10-24 13:43:42'),(3,2,5,'2020-10-24 14:04:36'),(3,4,6,'2020-10-24 14:07:46'),(4,1,3,'2020-10-24 13:43:42'),(4,2,4,'2020-10-24 14:04:36'),(4,3,1,'2020-10-24 14:07:46'),(5,1,3,'2020-10-24 13:49:03'),(5,2,4,'2020-10-24 14:04:36'),(5,4,6,'2020-10-24 14:07:46'),(6,1,4,'2020-10-24 13:49:03'),(6,2,4,'2020-10-24 14:04:36'),(6,4,6,'2020-10-24 14:07:46'),(7,1,4,'2020-10-24 13:49:03'),(7,2,5,'2020-10-24 14:04:36'),(7,3,6,'2020-10-24 14:07:46'),(8,1,4,'2020-10-24 13:49:03'),(8,2,5,'2020-10-24 14:04:36'),(8,4,4,'2020-10-24 14:07:46'),(9,1,5,'2020-10-24 13:49:03'),(9,2,4,'2020-10-24 14:04:36'),(9,3,2,'2020-10-24 14:07:46'),(10,1,5,'2020-10-24 13:49:03'),(10,2,5,'2020-10-24 14:04:36'),(10,4,1,'2020-10-24 14:07:46'),(11,1,6,'2020-10-24 13:56:12'),(11,2,3,'2020-10-24 14:04:36'),(11,4,5,'2020-10-24 14:07:46'),(12,1,6,'2020-10-24 13:56:12'),(12,2,3,'2020-10-24 14:04:36'),(12,4,3,'2020-10-24 14:07:46'),(13,1,6,'2020-10-24 13:56:12'),(13,2,2,'2020-10-24 14:04:36'),(13,4,2,'2020-10-24 14:07:46'),(14,1,6,'2020-10-24 13:56:12'),(14,2,2,'2020-10-24 14:04:36'),(15,1,6,'2020-10-24 13:56:12'),(15,2,1,'2020-10-24 14:04:36');
 /*!40000 ALTER TABLE `emp_dpt_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +86,7 @@ CREATE TABLE `employees` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +95,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,'Alan P. Blane','AlanPBlane@jourrapide.com','$2y$10$hQW3FNE6coEssYZ0XBfCqeXmJNGw.OIDJW9WuS3kKkUW.EtNTuKTe','2020-06-22 10:07:06'),(2,'Cinda K. Manley','CindaKManley@dayrep.com','$2y$10$hQW3FNE6coEssYZ0XBfCqeXmJNGw.OIDJW9WuS3kKkUW.EtNTuKTe','2020-06-22 10:15:57'),(3,'Nicholas B. Novello','NicholasBNovello@armyspy.com','$2y$10$hQW3FNE6coEssYZ0XBfCqeXmJNGw.OIDJW9WuS3kKkUW.EtNTuKTe','2020-06-22 11:33:26'),(4,'Yvette J. McRae','YvetteJMcRae@jourrapide.com','$2y$10$hQW3FNE6coEssYZ0XBfCqeXmJNGw.OIDJW9WuS3kKkUW.EtNTuKTe','2020-06-22 11:33:26');
+INSERT INTO `employees` VALUES (1,'Alan P. Blane','emp-1@test.com','123456','2020-06-22 10:07:06'),(2,'Cinda K. Manley','emp-2@test.com','123456','2020-06-22 10:15:57'),(3,'Nicholas B. Novello','emp-3@test.com','123456','2020-06-22 11:33:26'),(4,'Yvette J. McRae','emp-4@test.com','123456','2020-06-22 11:33:26'),(5,'Blane Alan P.','emp-5@test.com','123456','2020-06-22 11:33:26'),(6,'Manley Cinda K.','emp-6@test.com','123456','2020-06-22 11:33:26'),(7,'Novello Nicholas B.','emp-7@test.com','123456','2020-06-22 11:33:26'),(8,'McRae Yvette J.','emp-8@test.com','123456','2020-06-22 11:33:26'),(9,'J. McRae Yvette','emp-9@test.com','123456','2020-06-22 11:33:26'),(10,'B. Novello Nicholas','emp-10@test.com','123456','2020-06-22 11:33:26'),(11,'K. Manley Cinda','emp-11@test.com','123456','2020-06-22 11:33:26'),(12,'P. Blane Alan','emp-12@test.com','123456','2020-06-22 11:33:26'),(13,'Blane Cinda','emp-13@test.com','123456','2020-06-22 11:33:26'),(14,'McRae  Nicholas','emp-14@test.com','123456','2020-06-22 11:33:26'),(15,'Nicholas Blane','emp-15@test.com','123456','2020-06-22 11:33:26');
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'CEO',1,'2020-10-21 19:36:55'),(2,'COO',2,'2020-10-21 19:36:55'),(3,'GENERAL MANAGER',3,'2020-10-21 19:38:08'),(4,'MANAGER',4,'2020-10-21 19:38:08'),(5,'SUPERVISOR',5,'2020-10-21 19:38:08'),(6,'STAFF',6,'2020-10-21 19:38:08'),(7,'DEVELOPER',7,'2020-10-21 20:18:31');
+INSERT INTO `roles` VALUES (1,'CEO',1,'2020-10-21 19:36:55'),(2,'COO',2,'2020-10-21 19:36:55'),(3,'GENERAL MANAGER',3,'2020-10-21 19:38:08'),(4,'MANAGER',4,'2020-10-21 19:38:08'),(5,'SUPERVISOR',5,'2020-10-21 19:38:08'),(6,'STAFF',6,'2020-10-21 19:38:08');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -135,4 +135,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-22  3:28:25
+-- Dump completed on 2020-10-24 20:10:48
