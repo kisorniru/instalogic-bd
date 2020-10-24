@@ -27,7 +27,7 @@
 			Header('Location: login.php');
 		}
 
-		$data = $emp->employeeAuthCheck($email, $password);
+		$data = $emp->getEmployeeAuthCheck($email, $password);
 
 		// Check auth is made or not
 		if (!isset($data)) {
@@ -66,7 +66,8 @@
 		echo "<pre>"; 
 		print_r($employeesUnderMe);
 		echo "</pre>";
-		
+	
+	// To avoid unwanted exception
 	} catch (Exception $ex) {
 		$msg = "Error: " . $ex->getMessage();
 		header('Location: login.php?exception=$msg');

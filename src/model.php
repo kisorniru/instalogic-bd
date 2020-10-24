@@ -106,13 +106,13 @@ class Model{
     }
 
     /**
-     * employee: employee authentication check
-     * @param type $email, $password
+     * To check user inputed password with database stored password
+     * @param $email
      * @return Array
-     */
-    public function employeeAuthCheck($email, $password){
-        
-        $where = "WHERE email = '{$email}' AND password ='{$password}'";
+    */
+    public function employeeOriginalPassword($email){
+
+        $where = "WHERE email = '{$email}'";
         $sql= "SELECT * FROM employees {$where}"; 
         
         $result = $this->query($sql);

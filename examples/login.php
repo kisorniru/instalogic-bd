@@ -36,13 +36,13 @@
 		  		if ( isset($_GET['authError']) && $_GET['authError'] == 1 )
 				{
 				     // treat the error case:
-				     echo "<p style='color:red; text-align:center;'>* Please, input properly.</p>";
+				     echo "<p style='color:red; text-align:center;'>* Sorry! Email Address or Password doesn't match.</p>";
 				}
 
 				if ( isset($_GET['dptError']) && $_GET['dptError'] == 1 )
 				{
 				     // treat the error case:
-				     echo "<p style='color:red; text-align:center;'>* Sorry! department doesn't match with your credentials.</p>";
+				     echo "<p style='color:red; text-align:center;'>* Sorry! Department doesn't match with your credentials.</p>";
 				}
 		  	
 		  	?>

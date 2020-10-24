@@ -23,11 +23,11 @@ use Organogram\model;
  * call of your desire method from view or anywhere. 
  * 
  */
- class Employee
+class Employee
 {
 
     function __construct(){
-        
+        // ToDo ...
     }
 
     /**
@@ -36,8 +36,8 @@ use Organogram\model;
      * @return type
      */
     function getEmployee($id = Null){
-        return Model::get()->employees();
 
+        return Model::get()->employees();
     }
 
     /**
@@ -45,9 +45,17 @@ use Organogram\model;
      * @param type $id
      * @return type
      */
-    function employeeAuthCheck($email, $password){
-        return Model::get()->employeeAuthCheck($email, $password);
+    function getEmployeeAuthCheck($email, $password){
+        
+        $data = Model::get()->employeeOriginalPassword($email);
+        $originalPassword = $data['password'];
 
+        if( password_verify($password, $originalPassword)){
+            
+            return $data;
+        } else{
+            return Null;
+        }
     }
 
     /**
@@ -56,8 +64,8 @@ use Organogram\model;
      * @return type
      */
     function getEmployeeHierarchyLevel($emp_id, $dpt_id){
+        
         return Model::get()->employeeRole($emp_id, $dpt_id);
-
     }
     
     /**
@@ -71,9 +79,8 @@ use Organogram\model;
      * @return Array List of employees 
      */
     function getEmployeeUnderMe($department_id, $hierarchy_level){
+        
         return Model::get()->employeesUnderMe($department_id, $hierarchy_level); 
     }
-
-   
 
 }
