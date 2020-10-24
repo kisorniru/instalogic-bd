@@ -15,3 +15,9 @@
 2. Database Configuration: Please change /src/.env file variable value with your database information.
 3. Open the browser and browse organogram/examples/login.php file.
 4. Input email address, password and department to get the list of your employees who work under you.
+5. For example: 
+```sh
+	email: emp-15@test.com
+	passsword: 123456
+	Department: Department -- B
+```
